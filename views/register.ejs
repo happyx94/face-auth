@@ -1,0 +1,54 @@
+<% include partials/header.ejs %>
+ 
+<div class="container-fluid">
+    <div class="jumbotron">
+		<body>
+
+		<h1 class="display-4"><%= title %></h1>
+        <p class="lead">Hello world!</p>
+        <hr class="my-4">
+        <p>Hello this is register chan</p>
+        <br>
+        <br>
+
+        <video id="player" autoplay="autoplay"></video>
+		<button id="capture">Capture</button>
+		<canvas id="canvas" width=320 height=240></canvas>
+		
+		<script>
+		  const player = document.getElementById('player');
+		  const canvas = document.getElementById('canvas');
+		  const context = canvas.getContext('2d');
+		  const captureButton = document.getElementById('capture');
+
+		  const constraints = {
+		    video: true,
+		  };
+
+		  captureButton.addEventListener('click', () => {
+		    // Draw the video frame to the canvas.
+		    context.drawImage(player, 0, 0, canvas.width, canvas.height);
+			//stop video stream
+			player.srcObject.getVideoTracks().forEach(track => track.stop());
+		  });
+
+		  // Attach the video stream to the video element and autoplay.
+		  navigator.mediaDevices.getUserMedia(constraints)
+		    .then((stream) => {
+		      player.srcObject = stream;
+		    });
+		</script>
+
+		<br>
+		<br>
+
+		<img id="userUpload"/>
+		<input type='file' onchange="readImageInput(this, userUpload)" />
+		<script type="text/javascript" src="camera.js"></script> 
+		</body>
+        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    </div>
+</div>
+
+<% include partials/footer.ejs %>   
+    
