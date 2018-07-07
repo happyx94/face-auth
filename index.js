@@ -5,7 +5,7 @@ var app			= express();
 var	User        = require("./models/user");
 var Rehive = require("rehive");
 var config = {apiVersion: 3, apiToken: 'd73e226d213fdb761533666a4ca9e4201cbb06a913e5b9449f79e668fae3fce9'};
-const rehive = new Rehive(config);
+const r = new Rehive(config);
 
 const IP = '10.123.14.21';
 const PORT = 8080;
@@ -20,6 +20,32 @@ mongoose.connect('mongodb://' + IP + '/face-auth');
 /* Routes */
 app.get('/', function(req, res) 
 {
+	//login
+
+	r.auth.login({
+	    user: "eric50818244@gmail.com",
+	    company: "ericlin94",
+	    password: "eric40418204"
+	}).then(function(user){
+    	
+	},function(err){
+    
+	})
+	
+	//transaction
+
+	r.transactions.createTransfer(
+	{
+	    amount: 50*100,
+	    recipient: "LP547887@gmail.com",
+	    currency: "USD"
+
+	}).then(function(res){
+	    console.log(res)
+	},function(err){
+	    console.log(err)
+	})
+	
     res.redirect('/index');
 });
 
