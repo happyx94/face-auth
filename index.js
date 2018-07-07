@@ -1,36 +1,43 @@
-var express 	= require("express");
-var request 	= require("request");
-var mongoose 	= require("mongoose");
-var app			= express();
-var	User        = require("./models/user");
-
-var Rehive = require("rehive");
-var config = {apiVersion: 3, apiToken: 'd73e226d213fdb761533666a4ca9e4201cbb06a913e5b9449f79e668fae3fce9'};
-const r = new Rehive(config);
-
+/* ----- Global Constants ----- */
+const DB_HOST = '10.123.14.21';
 const IP = '10.123.14.21';
 const PORT = 8080;
 const APP_TITLE = 'Face Auth';
+const R_COMPANY	= 'ericlin94';
 
+/* ------ Import Modules ------ */
+var express 	= require("express");
+var request 	= require("request");
+var mongoose 	= require("mongoose");
+var face 		= require("face-recognition");
+var Rehive 		= require("rehive");
+var	User        = require("./models/user");
+
+/* ------- Initializtion ------- */
+var app			= express();
+var r 			= new Rehive({ apiVersion: 3, apiToken: 'd73e226d213fdb761533666a4ca9e4201cbb06a913e5b9449f79e668fae3fce9' });
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
-mongoose.connect('mongodb://' + IP + '/face-auth');
+mongoose.connect('mongodb://' + DB_HOST + '/face-auth');
 
-	
-/* Routes */
+
+/* ----------- Routes -----------*/
 app.get('/', function(req, res) 
 {
 	//login
 
-	r.auth.login({
+	r.auth.login(
+	{
 	    user: "eric50818244@gmail.com",
-	    company: "ericlin94",
+	    company: R_COMPANY,
 	    password: "eric40418204"
-	}).then(function(user){
-    	
-	},function(err){
+	}).then(function(user)
+	{
+    	console.log(user)
+	},function(err)
+	{
     
-	})
+	});
 	
 	//transaction
 
