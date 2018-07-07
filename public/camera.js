@@ -14,3 +14,4 @@ function readImageInput(input, userUpload) {
     reader.readAsDataURL(input.files[0]);
 	}
 };
+		  
