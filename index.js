@@ -3,10 +3,6 @@ var request 	= require("request");
 var mongoose 	= require("mongoose");
 var app			= express();
 var	User        = require("./models/user");
-var Rehive 		= require("rehive");
-var config 		= {apiVersion: 3, apiToken: 'd73e226d213fdb761533666a4ca9e4201cbb06a913e5b9449f79e668fae3fce9'};
-const rehive 	= new Rehive(config);
-const { spawn } = require('child_process');	
 
 const IP = '10.123.14.21';
 const PORT = 8080;
@@ -15,8 +11,6 @@ const APP_TITLE = 'Face Auth';
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 mongoose.connect('mongodb://' + IP + '/face-auth');
-
-
 
 	
 /* Routes */
