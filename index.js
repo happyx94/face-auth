@@ -5,6 +5,11 @@ var app			= express();
 var	User        = require("./models/user");
 
 
+var Rehive = require("rehive");
+
+var config = {apiVersion: 3, apiToken: 'd73e226d213fdb761533666a4ca9e4201cbb06a913e5b9449f79e668fae3fce9'};
+const r = new Rehive(config);
+
 const IP = '10.123.14.21';
 const PORT = 8080;
 const APP_TITLE = 'Face Auth';
@@ -23,7 +28,7 @@ app.get('/', function(req, res)
 
 app.get('/index', function(req, res) 
 {
-    res.render('index', { title: APP_TITLE});
+    res.render('index', { title: APP_TITLE });
 });
 
 app.get('/mockuser/:name', function(req, res)
