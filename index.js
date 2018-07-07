@@ -3,9 +3,10 @@ var request 	= require("request");
 var mongoose 	= require("mongoose");
 var app			= express();
 var	User        = require("./models/user");
-var Rehive = require("rehive");
-var config = {apiVersion: 3, apiToken: 'd73e226d213fdb761533666a4ca9e4201cbb06a913e5b9449f79e668fae3fce9'};
-const rehive = new Rehive(config);
+var Rehive 		= require("rehive");
+var config 		= {apiVersion: 3, apiToken: 'd73e226d213fdb761533666a4ca9e4201cbb06a913e5b9449f79e668fae3fce9'};
+const rehive 	= new Rehive(config);
+const { spawn } = require('child_process');	
 
 const IP = '10.123.14.21';
 const PORT = 8080;
@@ -17,6 +18,7 @@ mongoose.connect('mongodb://' + IP + '/face-auth');
 
 
 
+	
 /* Routes */
 app.get('/', function(req, res) 
 {
