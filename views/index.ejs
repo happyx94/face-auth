@@ -8,6 +8,10 @@
         <p>Hello</p>
         <br>
         <br>
+
+        <!--
+
+
         <video id="player" controls autoplay></video>
 		<button id="capture">Capture</button>
 		<canvas id="canvas" width=320 height=240></canvas>
@@ -34,9 +38,51 @@
 		      player.srcObject = stream;
 		    });
 		</script>
+
+		-->
+
 		<br>
 		<br>
-		<input type="file" accept="image/*" capture="camera">upload camera
+
+		
+		<title>JavaScript file upload</title>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<script type="text/javascript">
+		var upload = function() {
+		    var photo = document.getElementById("photo");
+		    var file = photo.files[0];
+
+		    console.log("File name: " + file.fileName);
+		    console.log("File size: " + file.fileSize);
+		    console.log("Binary content: " + file.getAsBinary());
+		    console.log("Text content: " + file.getAsText(""));
+
+		    var preview = document.getElementById("preview");
+		    preview.src = file.getAsDataURL();
+
+		    return false;
+		};
+		</script>
+		</head>
+		<body>
+
+		<input type='file' onchange="readURL(this);" />
+		<img id="userUpload"/>
+		<script>
+			function readURL(input) {
+            	if (input.files && input.files[0]) {
+	               	var reader = new FileReader();
+
+	                reader.onload = function (e) {
+	                    $('#userUpload')
+	                        .attr('src', e.target.result);
+	                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+		</script>
+
+
 		<br>
 		<br>
         <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
