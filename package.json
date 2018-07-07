@@ -1,0 +1,32 @@
+{
+  "name": "face-auth",
+  "version": "1.0.0",
+  "description": "Face recongition for transaction authorization",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/happyx94/face-auth.git"
+  },
+  "keywords": [
+    "face",
+    "recognition",
+    "transaction",
+    "security",
+    "fintech"
+  ],
+  "author": "Larry Lai, Joe Huang, Edward Wang, Eric Lin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/happyx94/face-auth/issues"
+  },
+  "homepage": "https://github.com/happyx94/face-auth#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "mongoose": "^5.2.1",
+    "request": "^2.87.0"
+  }
+}
