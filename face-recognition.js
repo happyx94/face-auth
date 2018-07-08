@@ -37,6 +37,11 @@ function recognize(imgurl, callback)
 	const proc = spawn('./python/face.py', ['-s', imgurl]);
 	var result;
 
+	proc.stderr.on('data', function(data) 
+	{
+		console.log(data);
+	});
+
 	proc.stdout.on('data', function(data) 
 	{
 		result = data;

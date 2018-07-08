@@ -2,8 +2,6 @@
 const DB_HOST = '10.123.14.21:27017';
 const IP = 'localhost';
 const PORT = 8080;
-
-
 const APP_TITLE = 'Face Auth';
 const R_COMPANY	= 'ericlin94';
 
@@ -26,7 +24,7 @@ var r 			= new Rehive({ apiVersion: 3, apiToken: 'd73e226d213fdb761533666a4ca9e4
 var Storage = multer.diskStorage(
 {
     destination: function (req, file, callback) { callback(null, "./images"); },
-    filename: function (req, file, callback) { callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname); }
+    filename: function (req, file, callback) { callback(null, req.body.username ? req.body.username : "_temp"); }
 });
 var upload = multer({ storage: Storage }).array("imgUploader", 3); //Field name and max count
 app.use(express.static("public"));
@@ -39,33 +37,21 @@ mongoose.connect('mongodb://' + DB_HOST + '/face-auth', { useNewUrlParser: true 
 /* Routes */
 app.get('/', function(req, res) 
 {
-	
-	/*var user = 
- 	{
- 		Username: 'eric',
- 		password: '1234'
- 	};
-
- 	User.create(user, function(err, user)
- 	{
- 	    if(err)
- 	    {
- 	        console.log("Gee Gee!!!!");
- 	        console.log(err);
- 	    } 
- 	    else 
- 	    {
- 	        console.log("User is added to the database.");
- 	    }
-    });*/
     res.redirect('/index');
 });
 
 //login routes
-app.get('/login',function(req,res){
+app.get('/login',function(req, res)
+{
+	res.render('login');
+});
 
-	res.render('login')
-})
+//login routes
+app.get('/options',function(req,res)
+{
+
+	res.render('options');
+});
 
 app.post('/login',function(req,res){
 	var user = 
@@ -85,14 +71,16 @@ app.post('/login',function(req,res){
 			res.render('options')
 		}
 	})
-	
 })
 
 //transaction Root
-app.get('/transaction',function(req,res){
+app.get('/transaction',function(req,res)
+{
 	res.render('transaction')
 })
-app.post('/transaction',function(req,res){
+
+app.post('/transaction',function(req,res)
+{
 	//if face-auth success
 	console.log(req.body.Amount)
 	console.log(req.body.Recipient)
@@ -126,31 +114,37 @@ app.get('/register', function(req, res)
     res.render('register', { title: APP_TITLE });
 });
 
-// app.get('/mockuser/:name', function(req, res)
-// {
-// 	var user = 
-// 	{
-// 		name: req.params.name,
-// 		email: 'test123@fakeemail.com',
-// 		phone: '978-666-6666',
-// 		password: 'thestrongestpasswordintheworld',
-// 		path: req.params.name.tolower + '/' 
-// 	};
+app.get('/auth', function(req, res) 
+{
+    res.render('auth', { title: APP_TITLE });
+});
 
-// 	User.create(user, function(err, user)
-// 	{
-// 	    if(err)
-// 	    {
-// 	        console.log("Gee Gee!!!!");
-// 	        console.log(err);
-// 	    } 
-// 	    else 
-// 	    {
-// 	        console.log("User " + req.params.name + " is added to the database.");
-// 	    }
-//     });
-//     res.redirect('/index');
-// });
+app.post('/auth/upload', function(req, res) 
+{
+	req.body.username = '_temp';
+    upload(req, res, function (err) 
+    {
+    	console.log(req.body.username);
+        if (err) 
+        {
+        	console.log(err);
+            return res.end("Something went wrong!");
+        }
+        
+        face.recognize('./images/_temp', function(err, res)
+        {
+        	if(err)
+        	{
+        		console.log('error');
+        	}
+        	else
+        	{
+        		console.log(res);
+        	}
+        });
+        return res.redirect("/transaction");
+    });
+});
 
 app.post("/register/upload", function (req, res) 
 {
@@ -161,7 +155,37 @@ app.post("/register/upload", function (req, res)
         	console.log(err);
             return res.end("Something went wrong!");
         }
-        return res.end("File uploaded sucessfully!.");
+        
+        face.addModel(req.body.username, './images/' + req.body.username, function(err, res)
+        {
+        	if(err)
+        	{
+        		console.log('error');
+        	}
+        	else
+        	{
+        		var user = 
+				{
+					Username: req.body.username,
+					password: req.body.password
+				};
+
+				User.create(user, function(err, user)
+				{
+	    			if(err)
+	    			{
+				        console.log("Gee Gee!!!!");
+				        console.log(err);
+	    			} 
+	    			else 
+	    			{
+	        			console.log("User " + user.Username + " is added to the database.");
+					}
+    			});
+        		console.log(res);
+        	}
+        });
+        return res.redirect("/options");
     });
 });
 
