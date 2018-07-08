@@ -14,6 +14,8 @@ var bodyParser	= require('body-parser');
 var face 		= require("./face-recognition");
 var Rehive 		= require("rehive");
 var	User        = require("./models/user");
+var bodyparser=require("body-parser");
+
 
 /* ------- Initializtion ------- */
 var app			= express();
@@ -26,49 +28,49 @@ var Storage = multer.diskStorage(
 var upload = multer({ storage: Storage }).array("imgUploader", 3); //Field name and max count
 app.use(express.static("public"));
 app.use(bodyParser.json());
+app.use(bodyparser.urlencoded({extended:true})); 
 app.set('view engine', 'ejs');
 mongoose.connect('mongodb://' + DB_HOST + '/face-auth', { useNewUrlParser: true });
 
 
-/* ----------- Routes -----------*/
+/* Routes */
 app.get('/', function(req, res) 
 {
-	//login
-
-	// r.auth.login(
-	// {
-	//     user: "eric50818244@gmail.com",
-	//     company: R_COMPANY,
-	//     password: "eric40418204"
-	// }).then
-	// (
-	// 	function(user)
-	// 	{
- //   		console.log(user)
-	// 	},
-		
-	// 	function(err)
-	// 	{
-	//     	console.log(err);
-	// 	}
-	// );
-		
-	// //transaction
-
-	// r.transactions.createTransfer(
-	// {
-	//     amount: 50*100,
-	//     recipient: "LP547887@gmail.com",
-	//     currency: "USD"
-
-	// }).then(function(res){
-	//     console.log(res)
-	// },function(err){
-	//     console.log(err)
-	// })
-	
     res.redirect('/index');
 });
+
+//login routes
+app.get('/login',function(req,res){
+	res.render('login')
+})
+
+app.post('/login',function(req,res){
+	res.render('options')
+})
+
+//transaction Root
+app.get('/transaction',function(req,res){
+	res.render('transaction')
+})
+app.post('/transaction',function(req,res){
+	//if face-auth success
+	console.log(req.body.Amount)
+	console.log(req.body.Recipient)
+	console.log(req.body.CurrencyType)
+	r.transactions.createTransfer(
+	{
+	    amount: req.body.Amount*100,
+	    recipient: req.body.Reciepiant,
+	    currency: req.body.CurrencyType
+
+	}).then(function(res2){
+	    console.log(res2)
+	    res.send('success')
+	},function(err){
+	    console.log(err)
+	    res.send(err)
+	})
+})
 
 app.get('/index', function(req, res) 
 {
@@ -85,31 +87,31 @@ app.get('/register', function(req, res)
     res.render('register', { title: APP_TITLE });
 });
 
-app.get('/mockuser/:name', function(req, res)
-{
-	var user = 
-	{
-		name: req.params.name,
-		email: 'test123@fakeemail.com',
-		phone: '978-666-6666',
-		password: 'thestrongestpasswordintheworld',
-		path: req.params.name.tolower + '/' 
-	};
+// app.get('/mockuser/:name', function(req, res)
+// {
+// 	var user = 
+// 	{
+// 		name: req.params.name,
+// 		email: 'test123@fakeemail.com',
+// 		phone: '978-666-6666',
+// 		password: 'thestrongestpasswordintheworld',
+// 		path: req.params.name.tolower + '/' 
+// 	};
 
-	User.create(user, function(err, user)
-	{
-	    if(err)
-	    {
-	        console.log("Gee Gee!!!!");
-	        console.log(err);
-	    } 
-	    else 
-	    {
-	        console.log("User " + req.params.name + " is added to the database.");
-	    }
-    });
-    res.redirect('/index');
-});
+// 	User.create(user, function(err, user)
+// 	{
+// 	    if(err)
+// 	    {
+// 	        console.log("Gee Gee!!!!");
+// 	        console.log(err);
+// 	    } 
+// 	    else 
+// 	    {
+// 	        console.log("User " + req.params.name + " is added to the database.");
+// 	    }
+//     });
+//     res.redirect('/index');
+// });
 
 app.post("/register/upload", function (req, res) 
 {
