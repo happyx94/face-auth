@@ -2,12 +2,18 @@
 
 <div class="container">
     <h1>Face Authentication</h1>
+    <form id="frmUploader" enctype="multipart/form-data" action="/auth/upload" method="post">
         <div class="form-group">
         	<video id="player" autoplay="autoplay"></video>
         	<canvas id="canvas" width=320 height=240></canvas>
         	<div>
-        	   <input class="btn btn-lg btn-success" type="submit" name="submit" id="capture" value="Capture" />
+        	    <button class="btn btn-outline-primary" type="button" id="capture">Capture</button>
+                <span>OR</span>        
+                <input class="btn btn-outline-secondary" type="file" onchange="readImageInput(this)" name="imgUploader"/>
         	</div>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-lg btn-success" type="submit" name="submit" id="btnSubmit" value="Submit" />
         </div>
     </form>
 </div>
