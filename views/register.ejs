@@ -3,52 +3,26 @@
 <div class="container-fluid">
     <div class="jumbotron">
 		<body>
-
-		<h1 class="display-4"><%= title %></h1>
-        <p class="lead">Hello world!</p>
+		<h1 class="display-4">Sign Up Now!</h1>
+        <p class="lead">Start sending money anywhere securely without typing any password</p>
         <hr class="my-4">
-        <p>Hello this is register chan</p>
-        <br>
-        <br>
-
-        <video id="player" autoplay="autoplay"></video>
-		<button id="capture">Capture</button>
-		<canvas id="canvas" width=320 height=240></canvas>
-		
-		<script>
-		  const player = document.getElementById('player');
-		  const canvas = document.getElementById('canvas');
-		  const context = canvas.getContext('2d');
-		  const captureButton = document.getElementById('capture');
-
-		  const constraints = {
-		    video: true,
-		  };
-
-		  captureButton.addEventListener('click', () => {
-		    // Draw the video frame to the canvas.
-		    context.drawImage(player, 0, 0, canvas.width, canvas.height);
-			//stop video stream
-			player.srcObject.getVideoTracks().forEach(track => track.stop());
-		  });
-
-		  // Attach the video stream to the video element and autoplay.
-		  navigator.mediaDevices.getUserMedia(constraints)
-		    .then((stream) => {
-		      player.srcObject = stream;
-		    });
-		</script>
-
-		<br>
-		<br>
-
-		<img id="userUpload"/>
-		<input type='file' onchange="readImageInput(this, userUpload)" />
-		<script type="text/javascript" src="camera.js"></script> 
-		</body>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+        <p>Please fill out the form below and take/upload a clear picture of your face and then click submit.</p>
     </div>
 </div>
 
+<div class="container">
+	<video id="player" autoplay="autoplay"></video>
+	<button id="capture">Capture</button>
+	<canvas id="canvas" width=320 height=240></canvas>
+	
+	<img id="userUpload"/>
+	
+	<form id="frmUploader" enctype="multipart/form-data" action="register/upload/" method="post">
+        <input type="file" onchange="readImageInput(this)" name="imgUploader" />
+        <input class="btn btn-primary btn-lg" type="submit" name="submit" id="btnSubmit" value="Upload" />
+    </form>
+</div>
+
+<script type="text/javascript" src="camera.js"></script>
 <% include partials/footer.ejs %>   
     
