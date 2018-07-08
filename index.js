@@ -1,7 +1,13 @@
 /* ----- Global Constants ----- */
+<<<<<<< HEAD
 const DB_HOST = '10.123.14.21:27017';
 const IP = 'localhost';
 const PORT = 8080;
+=======
+const DB_HOST = 'localhost:27017';
+const IP = process.env.IP;
+const PORT = process.env.PORT;
+>>>>>>> 7400ada7f25b3a5d4e2f2ae3cb035954ad9f7296
 const APP_TITLE = 'Face Auth';
 const R_COMPANY	= 'ericlin94';
 

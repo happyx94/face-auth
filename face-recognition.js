@@ -47,4 +47,5 @@ function recognize(imgurl, callback)
   		callback(!code, result);
 	});
 }
-module.exports = mongoose.model("face-recognition", { addModel: addModel, verify: verify, recognize: recognize});
+
+module.exports = { addModel: addModel, verify: verify, recognize: recognize };
