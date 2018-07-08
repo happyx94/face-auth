@@ -66,6 +66,11 @@ app.get('/login', function(req, res)
     res.render('login', { title: APP_TITLE });
 });
 
+app.get('/register', function(req, res) 
+{
+    res.render('register', { title: APP_TITLE });
+});
+
 app.get('/mockuser/:name', function(req, res)
 {
 	var user = 
