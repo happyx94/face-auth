@@ -1,13 +1,9 @@
 /* ----- Global Constants ----- */
-<<<<<<< HEAD
 const DB_HOST = '10.123.14.21:27017';
 const IP = 'localhost';
 const PORT = 8080;
-=======
-const DB_HOST = 'localhost:27017';
-const IP = process.env.IP;
-const PORT = process.env.PORT;
->>>>>>> 7400ada7f25b3a5d4e2f2ae3cb035954ad9f7296
+
+
 const APP_TITLE = 'Face Auth';
 const R_COMPANY	= 'ericlin94';
 
@@ -21,6 +17,7 @@ var face 		= require("./face-recognition");
 var Rehive 		= require("rehive");
 var	User        = require("./models/user");
 var bodyparser=require("body-parser");
+var currentUser={}
 
 
 /* ------- Initializtion ------- */
@@ -73,15 +70,20 @@ app.get('/login',function(req,res){
 app.post('/login',function(req,res){
 	var user = 
  	{
- 		Username: req.body.Username,
- 		password: req.body.password
+ 		Username: req.body.UserName,
+ 		password: req.body.Password
  	};
-
-	User.find(user,function(err,user){
-		if(user.length==0||err)
-			res.send('User not found')
-		else
+	User.findOne(user,function(err,users){
+		if(err)
+			res.send(err)
+		else if(!users){
+			res.send('User not found'+users)
+		}
+		else{
+			console.log(users)
+			currentUser=user
 			res.render('options')
+		}
 	})
 	
 })
@@ -95,7 +97,7 @@ app.post('/transaction',function(req,res){
 	console.log(req.body.Amount)
 	console.log(req.body.Recipient)
 	console.log(req.body.CurrencyType)
-	r.admin.transactions.createTransfer(
+	r.transactions.createTransfer(
 	{
 	    amount: req.body.Amount*100,
 	    recipient: req.body.Reciepiant,
