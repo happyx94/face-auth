@@ -1,7 +1,7 @@
 /* ----- Global Constants ----- */
-const DB_HOST = 'localhost:27017';
-const IP = process.env.IP;
-const PORT = process.env.PORT;
+const DB_HOST = '10.123.14.21:27017';
+const IP = '10.123.14.21';
+const PORT = 8080;
 const APP_TITLE = 'Face Auth';
 const R_COMPANY	= 'ericlin94';
 
@@ -30,7 +30,7 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyparser.urlencoded({extended:true})); 
 app.set('view engine', 'ejs');
-mongoose.connect('mongodb://' + DB_HOST + '/face-auth', { useNewUrlParser: true });
+mongoose.connect('mongodb://' + DB_HOST + '/face-auth-deploy', { useNewUrlParser: true });
 
 
 /* Routes */
