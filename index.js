@@ -1,7 +1,13 @@
 /* ----- Global Constants ----- */
+<<<<<<< HEAD
+const DB_HOST = '10.123.14.21:27017';
+const IP = 'localhost';
+const PORT = 8080;
+=======
 const DB_HOST = 'localhost:27017';
 const IP = process.env.IP;
 const PORT = process.env.PORT;
+>>>>>>> 7400ada7f25b3a5d4e2f2ae3cb035954ad9f7296
 const APP_TITLE = 'Face Auth';
 const R_COMPANY	= 'ericlin94';
 
@@ -36,16 +42,48 @@ mongoose.connect('mongodb://' + DB_HOST + '/face-auth', { useNewUrlParser: true 
 /* Routes */
 app.get('/', function(req, res) 
 {
+	
+	/*var user = 
+ 	{
+ 		Username: 'eric',
+ 		password: '1234'
+ 	};
+
+ 	User.create(user, function(err, user)
+ 	{
+ 	    if(err)
+ 	    {
+ 	        console.log("Gee Gee!!!!");
+ 	        console.log(err);
+ 	    } 
+ 	    else 
+ 	    {
+ 	        console.log("User is added to the database.");
+ 	    }
+    });*/
     res.redirect('/index');
 });
 
 //login routes
 app.get('/login',function(req,res){
+
 	res.render('login')
 })
 
 app.post('/login',function(req,res){
-	res.render('options')
+	var user = 
+ 	{
+ 		Username: req.body.Username,
+ 		password: req.body.password
+ 	};
+
+	User.find(user,function(err,user){
+		if(err||user=='[]')
+			res.send('User not found')
+		else
+			res.render('options')
+	})
+	
 })
 
 //transaction Root
@@ -57,12 +95,11 @@ app.post('/transaction',function(req,res){
 	console.log(req.body.Amount)
 	console.log(req.body.Recipient)
 	console.log(req.body.CurrencyType)
-	r.transactions.createTransfer(
+	r.admin.transactions.createTransfer(
 	{
 	    amount: req.body.Amount*100,
 	    recipient: req.body.Reciepiant,
 	    currency: req.body.CurrencyType
-
 	}).then(function(res2){
 	    console.log(res2)
 	    res.send('success')
