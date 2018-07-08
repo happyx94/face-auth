@@ -1,0 +1,17 @@
+<% include partials/header.ejs %>
+
+<div class="container">
+    <h1>Face Authentication</h1>
+        <div class="form-group">
+        	<video id="player" autoplay="autoplay"></video>
+        	<canvas id="canvas" width=320 height=240></canvas>
+        	<div>
+        	   <input class="btn btn-lg btn-success" type="submit" name="submit" id="capture" value="Capture" />
+        	</div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="/camera.js"></script>
+<% include partials/footer.ejs %>   
+    

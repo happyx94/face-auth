@@ -11,6 +11,7 @@ captureButton.addEventListener('click', () =>
 {
 	// Draw the video frame to the canvas.
 	context.drawImage(player, 0, 0, canvas.width, canvas.height);
+	
 	//stop video stream
 	player.srcObject.getVideoTracks().forEach(track => track.stop());
 });

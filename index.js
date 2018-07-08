@@ -23,7 +23,7 @@ var r 			= new Rehive({ apiVersion: 3, apiToken: 'd73e226d213fdb761533666a4ca9e4
 var Storage = multer.diskStorage(
 {
     destination: function (req, file, callback) { callback(null, "./images"); },
-    filename: function (req, file, callback) { callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname); }
+    filename: function (req, file, callback) { callback(null, req.body.username); }
 });
 var upload = multer({ storage: Storage }).array("imgUploader", 3); //Field name and max count
 app.use(express.static("public"));
@@ -87,31 +87,10 @@ app.get('/register', function(req, res)
     res.render('register', { title: APP_TITLE });
 });
 
-// app.get('/mockuser/:name', function(req, res)
-// {
-// 	var user = 
-// 	{
-// 		name: req.params.name,
-// 		email: 'test123@fakeemail.com',
-// 		phone: '978-666-6666',
-// 		password: 'thestrongestpasswordintheworld',
-// 		path: req.params.name.tolower + '/' 
-// 	};
-
-// 	User.create(user, function(err, user)
-// 	{
-// 	    if(err)
-// 	    {
-// 	        console.log("Gee Gee!!!!");
-// 	        console.log(err);
-// 	    } 
-// 	    else 
-// 	    {
-// 	        console.log("User " + req.params.name + " is added to the database.");
-// 	    }
-//     });
-//     res.redirect('/index');
-// });
+app.get('/auth/:user', function(req, res) 
+{
+    res.render('auth', { title: APP_TITLE });
+});
 
 app.post("/register/upload", function (req, res) 
 {
@@ -122,7 +101,37 @@ app.post("/register/upload", function (req, res)
         	console.log(err);
             return res.end("Something went wrong!");
         }
-        return res.end("File uploaded sucessfully!.");
+        
+        face.addModel(req.body.username, './images/' + req.body.username, function(err, res)
+        {
+        	if(err)
+        	{
+        		console.log('error');
+        	}
+        	else
+        	{
+        		var user = 
+				{
+					Username: req.body.username,
+					password: req.body.password
+				};
+
+				User.create(user, function(err, user)
+				{
+	    			if(err)
+	    			{
+				        console.log("Gee Gee!!!!");
+				        console.log(err);
+	    			} 
+	    			else 
+	    			{
+	        			console.log("User " + user.Username + " is added to the database.");
+					}
+    			});
+        		console.log(res);
+        	}
+        });
+        return res.redirect("/options");
     });
 });
 
