@@ -78,7 +78,7 @@ app.post('/login',function(req,res){
  	};
 
 	User.find(user,function(err,user){
-		if(err||user=='[]')
+		if(user.length==0||err)
 			res.send('User not found')
 		else
 			res.render('options')
